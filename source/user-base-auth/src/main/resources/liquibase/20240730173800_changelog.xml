@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20240730173800" author="thonbui">
+        <!-- Create the db_user_base_student table -->
+        <createTable tableName="db_user_base_student">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_user_base_studentPK"/>
+            </column>
+            <column name="birthday" type="DATE"/>
+            <column name="account_id" type="BIGINT"/>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="identification" type="VARCHAR(255)"/>
+        </createTable>
+
+        <!-- Add foreign key constraint for account_id -->
+        <addForeignKeyConstraint
+                baseTableName="db_user_base_student"
+                baseColumnNames="account_id"
+                referencedTableName="db_user_base_account"
+                referencedColumnNames="id"
+                constraintName="FK_student_account"/>
+    </changeSet>
+
+</databaseChangeLog>
