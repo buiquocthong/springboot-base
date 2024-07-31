@@ -3,7 +3,10 @@ package com.base.auth.mapper;
 import com.base.auth.dto.course.CourseDto;
 import com.base.auth.form.course.CreateCourseForm;
 import com.base.auth.form.course.UpdateCourseForm;
+import com.base.auth.form.news.CreateNewsForm;
+import com.base.auth.form.news.UpdateNewsForm;
 import com.base.auth.model.Course;
+import com.base.auth.model.News;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -25,19 +28,20 @@ public interface CourseMapper {
     @IterableMapping(elementTargetType = CourseDto.class, qualifiedByName = "fromCourseToDto")
     List<CourseDto> fromCoursesToCourseDto(List<Course> courses);
 
-    @Mapping(source = "categoryDescription", target = "description")
-    @Mapping(source = "image", target = "image")
-    @Mapping(source = "ordering", target = "ordering")
-    @Mapping(source = "kind", target = "kind")
-    @Named("fromCreateCourseFormToCategory")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "description", target = "description")
+    @Mapping(source = "shortDescription", target = "shortDescription")
+    @Mapping(source = "banner", target = "banner")
+    @Mapping(source = "price", target = "price")
+    @Mapping(source = "saleOff", target = "saleOff")
     @BeanMapping(ignoreByDefault = true)
     Course fromCreateCourseFormToEntity(CreateCourseForm courseForm);
-    @Mapping(source = "categoryDescription", target = "description")
-    @Mapping(source = "image", target = "image")
-    @Mapping(source = "ordering", target = "ordering")
-    @Mapping(source = "kind", target = "kind")
-    @BeanMapping(ignoreByDefault = true)
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "description", target = "description")
+    @Mapping(source = "shortDescription", target = "shortDescription")
+    @Mapping(source = "banner", target = "banner")
+    @Mapping(source = "price", target = "price")
+    @Mapping(source = "saleOff", target = "saleOff")
     @Named("updateCourseNotStartedFromForm")
     void updateCourseFromUpdateCourseForm(UpdateCourseForm updateCourseForm, @MappingTarget Course course);
 }
-
