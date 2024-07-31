@@ -103,4 +103,8 @@ public class ErrorCode {
     public static final String STUDENT_ERROR_EXIST = "ERROR-STUDENT-0000";
     public static final String STUDENT_ERROR_NOT_FOUND = "ERROR-STUDENT-0001";
     public static final String STUDENT_ERROR_LOGIN_FAILED = "ERROR-STUDENT-0002";
+
+    public static final String COURSE_ERROR_EXIST = "ERROR-COURSE-0000";
+    public static final String COURSE_ERROR_NOT_FOUND = "ERROR-COURSE-0001";
+
 }
