@@ -31,6 +31,9 @@ public class UserBaseConstant {
 
     public static final Integer CATEGORY_KIND_NEWS = 1;
 
+    public static final Integer CATEGORY_KIND_COURSE = 1;
+
+
     private UserBaseConstant(){
         throw new IllegalStateException("Utility class");
     }

@@ -4,6 +4,7 @@ package com.base.auth.controller;
 import com.base.auth.constant.UserBaseConstant;
 import com.base.auth.dto.ApiMessageDto;
 import com.base.auth.dto.ErrorCode;
+import com.base.auth.dto.ResponseListDto;
 import com.base.auth.dto.course.CourseDto;
 import com.base.auth.exception.BadRequestException;
 import com.base.auth.exception.UnauthorizationException;
@@ -12,15 +13,20 @@ import com.base.auth.form.course.UpdateCourseForm;
 import com.base.auth.mapper.CourseMapper;
 import com.base.auth.model.Category;
 import com.base.auth.model.Course;
+import com.base.auth.model.criteria.CourseCriteria;
 import com.base.auth.repository.CategoryRepository;
 import com.base.auth.repository.CourseRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -35,7 +41,22 @@ public class CourseController extends ABasicController{
     @Autowired
     CategoryRepository categoryRepository;
 
+    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('COU_L')")
+    public ApiMessageDto<ResponseListDto<List<CourseDto>>> list(CourseCriteria courseCriteria, Pageable pageable) {
+        ApiMessageDto<ResponseListDto<List<CourseDto>>> responseListObjApiMessageDto = new ApiMessageDto<>();
+        Page<Course> listCourse = courseRepository.findAll(courseCriteria.getSpecification(), pageable);
+        ResponseListDto<List<CourseDto>> responseListObj = new ResponseListDto<>();
+        responseListObj.setContent(courseMapper.fromCoursesToCourseDto(listCourse.getContent()));
+        responseListObj.setTotalPages(listCourse.getTotalPages());
+        responseListObj.setTotalElements(listCourse.getTotalElements());
+        responseListObjApiMessageDto.setData(responseListObj);
+        responseListObjApiMessageDto.setMessage("Get list success");
+        return responseListObjApiMessageDto;
+    }
+
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('COU_G')")
     public ApiMessageDto<CourseDto> get(@PathVariable("id") Long id) {
         ApiMessageDto<CourseDto> apiMessageDto = new ApiMessageDto<>();
         Course exitingCourse = courseRepository.findById(id).orElse(null);
@@ -52,6 +73,7 @@ public class CourseController extends ABasicController{
 
 
     @PostMapping(value = "/create",  produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('COU_C')")
     public ApiMessageDto<String> create(@Valid @RequestBody CreateCourseForm courseForm){
         if(!isSuperAdmin()){
             throw new UnauthorizationException("Not allowed create.");
@@ -75,6 +97,7 @@ public class CourseController extends ABasicController{
         return apiMessageDto;
     }
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('COU_U')")
     public ApiMessageDto<String> update(@Valid @RequestBody UpdateCourseForm updateCourseForm, BindingResult bindingResult) {
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
         Course existingCourse = courseRepository.findById(updateCourseForm.getId()).orElse(null);
@@ -111,6 +134,7 @@ public class CourseController extends ABasicController{
         return apiMessageDto;
     }
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('COU_DEL')")
     public ApiMessageDto<String> delete(@PathVariable("id") Long id) {
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
         Course exsitingCourse = courseRepository.findById(id).orElse(null);
