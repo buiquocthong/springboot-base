@@ -36,7 +36,6 @@ public class CourseController extends ABasicController{
     CategoryRepository categoryRepository;
 
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    //@PreAuthorize("hasRole('NEWS_V')")
     public ApiMessageDto<CourseDto> get(@PathVariable("id") Long id) {
         ApiMessageDto<CourseDto> apiMessageDto = new ApiMessageDto<>();
         Course exitingCourse = courseRepository.findById(id).orElse(null);
@@ -53,7 +52,6 @@ public class CourseController extends ABasicController{
 
 
     @PostMapping(value = "/create",  produces = MediaType.APPLICATION_JSON_VALUE)
-    //@PreAuthorize("hasRole('S_C')")
     public ApiMessageDto<String> create(@Valid @RequestBody CreateCourseForm courseForm){
         if(!isSuperAdmin()){
             throw new UnauthorizationException("Not allowed create.");
@@ -77,7 +75,6 @@ public class CourseController extends ABasicController{
         return apiMessageDto;
     }
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
-    //@PreAuthorize("hasRole('NEWS_U')")
     public ApiMessageDto<String> update(@Valid @RequestBody UpdateCourseForm updateCourseForm, BindingResult bindingResult) {
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
         Course existingCourse = courseRepository.findById(updateCourseForm.getId()).orElse(null);
@@ -90,7 +87,7 @@ public class CourseController extends ABasicController{
             Boolean existingCourseName = courseRepository.existsByName(updateCourseForm.getName());
             if (existingCourseName) {
                 apiMessageDto.setResult(false);
-                apiMessageDto.setMessage("Name đã tồn tại, không thể cập nhật");
+                apiMessageDto.setMessage("Name is existed, can not update");
                 apiMessageDto.setCode(ErrorCode.COURSE_ERROR_EXIST);
                 return apiMessageDto;
             }
@@ -100,9 +97,9 @@ public class CourseController extends ABasicController{
             throw new BadRequestException(ErrorCode.CATEGORY_ERROR_NOT_FOUND);
         }
         if(!Objects.equals(updateCourseForm.getCategoryId(), existingCourse.getField().getId())){
-            if(!Objects.equals(category.getKind(), UserBaseConstant.CATEGORY_KIND_NEWS)){
+            if(!Objects.equals(category.getKind(), UserBaseConstant.CATEGORY_KIND_COURSE)){
                 apiMessageDto.setResult(false);
-                apiMessageDto.setMessage("");
+                apiMessageDto.setMessage("Category kind must be course");
                 return apiMessageDto;
             }
         }
@@ -114,7 +111,6 @@ public class CourseController extends ABasicController{
         return apiMessageDto;
     }
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    //@PreAuthorize("hasRole('NEWS_D')")
     public ApiMessageDto<String> delete(@PathVariable("id") Long id) {
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
         Course exsitingCourse = courseRepository.findById(id).orElse(null);
