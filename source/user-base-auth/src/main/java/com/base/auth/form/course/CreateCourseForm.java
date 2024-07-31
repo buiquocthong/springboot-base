@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data
 @ApiModel
@@ -23,12 +24,12 @@ public class CreateCourseForm {
     @NotEmpty(message = "banner cant not be null")
     @ApiModelProperty(name = "banner", required = true)
     private String banner;
-    @NotEmpty(message = "price cant not be null")
+    @NotNull(message = "price cant not be null")
     @ApiModelProperty(name = "price", required = true)
     private Double price;
     @ApiModelProperty(name = "saleOff", required = true)
     private Integer saleOff;
-    @NotEmpty(message = "category id cant not be null")
+    @NotNull(message = "category id cant not be null")
     @ApiModelProperty(name = "categoryId", required = true)
     private Long categoryId;
 

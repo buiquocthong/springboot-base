@@ -93,7 +93,7 @@ public class CategoryController extends ABasicController {
     }
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('CA_C')")
+//    @PreAuthorize("hasRole('CA_C')")
     public ApiMessageDto<String> createCategory(@Valid @RequestBody CreateCategoryForm createCategoryForm, BindingResult bindingResult) {
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
         Category categoryCheckName = categoryRepository.findByName(createCategoryForm.getName());
