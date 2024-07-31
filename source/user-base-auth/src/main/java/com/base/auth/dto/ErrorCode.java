@@ -107,4 +107,15 @@ public class ErrorCode {
     public static final String COURSE_ERROR_EXIST = "ERROR-COURSE-0000";
     public static final String COURSE_ERROR_NOT_FOUND = "ERROR-COURSE-0001";
 
+
+    /**
+     * Starting error code REGISTRATION
+     *
+     */
+    public static final String REGISTRATION_ERROR_EXIST = "ERROR-REGISTRATION-0000";
+    public static final String REGISTRATION_ERROR_NOT_FOUND = "ERROR-REGISTRATION-0001";
+    public static final String REGISTRATION_ERROR_LOGIN_FAILED = "ERROR-REGISTRATION-0002";
+    public static final String INVALID_STUDENT_OR_COURSE = "ERROR-REGISTRATION-0003";
+
+
 }
